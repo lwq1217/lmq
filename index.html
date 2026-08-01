@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>❤️ 表白 lmq ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'ZCOOL KuaiLe', cursive, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffcce0 25%, #ffb3c6 50%, #ff9eb5 75%, #ff8fa3 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+        /* 漂浮的爱心背景 */
+        .heart {
+            position: fixed;
+            color: rgba(255, 105, 180, 0.4);
+            animation: float 8s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(100vh) rotate(0deg) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) rotate(720deg) scale(1.2); opacity: 0; }
+        }
+        /* 花瓣飘落 */
+        .petal {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: radial-gradient(circle, #ffb6c1, #ff69b4);
+            border-radius: 50% 0 50% 50%;
+            animation: fall linear infinite;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.6;
+        }
+        @keyframes fall {
+            0% { transform: translateY(-10vh) rotate(0deg) translateX(0); }
+            100% { transform: translateY(110vh) rotate(360deg) translateX(100px); }
+        }
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        /* 头部 */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            animation: fadeInDown 1.5s ease-out;
+        }
+        .header h1 {
+            font-family: 'Ma Shan Zheng', cursive;
+            font-size: 4rem;
+            background: linear-gradient(45deg, #ff1493, #ff6b9d, #ff8fab, #ff477e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 3px 3px 6px rgba(255, 20, 147, 0.2);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(255, 20, 147, 0.5)); }
+            to { filter: drop-shadow(0 0 25px rgba(255, 20, 147, 0.8)); }
+        }
+        .header .subtitle {
+            font-size: 1.5rem;
+            color: #d63384;
+            margin-top: 10px;
+            animation: fadeIn 2s ease-out 0.5s both;
+        }
+        .header .date-display {
+            font-size: 1rem;
+            color: #c2185b;
+            margin-top: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(5px);
+        }
+        /* 倒计时 */
+        .countdown-section {
+            text-align: center;
+            margin: 30px 0;
+            animation: fadeIn 2s ease-out 1s both;
+        }
+        .countdown-box {
+            display: inline-flex;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.2);
+        }
+        .countdown-item {
+            text-align: center;
+        }
+        .countdown-item .number {
+            font-size: 2.5rem;
+            color: #e91e63;
+            font-weight: bold;
+            display: block;
+        }
+        .countdown-item .label {
+            font-size: 0.9rem;
+            color: #ad1457;
+        }
+        /* 表白信 */
+        .love-letter {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            padding: 40px;
+            margin: 30px auto;
+            max-width: 700px;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            position: relative;
+            animation: fadeInUp 1.5s ease-out 1.5s both;
+            border: 3px solid rgba(255, 182, 193, 0.5);
+        }
+        .love-letter::before {
+            content: "💌";
+            font-size: 3rem;
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .love-letter h2 {
+            color: #e91e63;
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .love-letter p {
+            color: #880e4f;
+            font-size: 1.2rem;
+            line-height: 2;
+            text-indent: 2em;
+            margin-bottom: 15px;
+        }
+        .love-letter .signature {
+            text-align: right;
+            color: #c2185b;
+            font-size: 1.3rem;
+            margin-top: 20px;
+            font-family: 'Ma Shan Zheng', cursive;
+        }
+        /* 照片墙 */
+        .photo-section {
+            margin: 50px 0;
+            animation: fadeIn 2s ease-out 2s both;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #e91e63;
+            margin-bottom: 30px;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .section-title::before,
+        .section-title::after {
+            content: "✨";
+            margin: 0 15px;
+            animation: sparkle 1.5s infinite;
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+        .photo-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.3);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+        }
+        .photo-card:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(255, 105, 180, 0.5);
+            border-color: #ff69b4;
+        }
+        .photo-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            display: block;
+        }
+        .photo-card .photo-caption {
+            padding: 15px;
+            text-align: center;
+            color: #c2185b;
+            font-size: 1.1rem;
+            background: linear-gradient(to bottom, #fff0f5, #ffe4e1);
+        }
+        .photo-card .heart-overlay {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 2rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            animation: heartbeat 1s infinite;
+        }
+        .photo-card:hover .heart-overlay {
+            opacity: 1;
+        }
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+        /* 上传提示 */
+        .upload-hint {
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px dashed #ff69b4;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            color: #d63384;
+            font-size: 1.1rem;
+            margin: 20px;
+        }
+        .upload-hint .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        /* 视频区域 */
+        .video-section {
+            margin: 50px 0;
+            animation: fadeIn 2s ease-out 2.5s both;
+        }
+        .video-container {
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            padding: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 10px 40px rgba(255, 105, 180, 0.3);
+            border: 3px solid rgba(255, 182, 193, 0.5);
+        }
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #ffeef8, #ffcce0);
+        }
+        .video-wrapper video,
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+        }
+        .video-caption {
+            text-align: center;
+            color: #c2185b;
+            font-size: 1.2rem;
+            margin-top: 15px;
+        }
+        /* 互动按钮区 */
+        .interactive-section {
+            text-align: center;
+            margin: 50px 0;
+            animation: fadeIn 2s ease-out 3s both;
+        }
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .love-btn {
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-pink {
+            background: linear-gradient(45deg, #ff1493, #ff6b9d);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+        .btn-pink:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 20, 147, 0.6);
+        }
+        .btn-rose {
+            background: linear-gradient(45deg, #ff477e, #ff8fa3);
+            color: white;
+            box-shadow: 0 5px 20px rgba(255, 71, 126, 0.4);
+        }
+        .btn-rose:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 71, 126, 0.6);
+        }
+        .love-btn:active {
+            transform: scale(0.95);
+        }
+        /* 爱心点击效果 */
+        .click-heart {
+            position: fixed;
+            pointer-events: none;
+            font-size: 2rem;
+            animation: clickHeartAnim 1s ease-out forwards;
+            z-index: 9999;
+        }
+        @keyframes clickHeartAnim {
+            0% { transform: scale(0) rotate(0deg); opacity: 1; }
+            100% { transform: scale(2) rotate(180deg) translateY(-100px); opacity: 0; }
+        }
+        /* 照片放大模态框 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.5);
+            border: 5px solid white;
+        }
+        .modal .close-btn {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 3rem;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .modal .close-btn:hover {
+            transform: rotate(90deg);
+        }
+        /* 弹窗 */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(255, 20, 147, 0.4);
+            z-index: 10001;
+            text-align: center;
+            max-width: 400px;
+            border: 3px solid #ff69b4;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        .popup.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        .popup .popup-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+            animation: heartbeat 1s infinite;
+        }
+        .popup h3 {
+            color: #e91e63;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .popup p {
+            color: #880e4f;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .popup .close-popup {
+            margin-top: 20px;
+            padding: 10px 30px;
+            background: linear-gradient(45deg, #ff1493, #ff6b9d);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-family: 'ZCOOL KuaiLe', cursive;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 10000;
+            display: none;
+        }
+        .overlay.active {
+            display: block;
+        }
+        /* 音乐控制 */
+        .music-control {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #ff1493, #ff6b9d);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+            z-index: 100;
+            animation: pulse 2s infinite;
+            border: 3px solid white;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(255, 20, 147, 0.7); }
+            50% { box-shadow: 0 0 0 20px rgba(255, 20, 147, 0); }
+        }
+        .music-control.playing {
+            animation: pulse 2s infinite, rotate 3s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #c2185b;
+            font-size: 1.2rem;
+            animation: fadeIn 2s ease-out 3.5s both;
+        }
+        .footer .footer-hearts {
+            font-size: 2rem;
+            margin-top: 10px;
+            animation: heartbeat 1.5s infinite;
+        }
+        /* 动画定义 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .header h1 { font-size: 2.5rem; }
+            .section-title { font-size: 1.8rem; }
+            .photo-grid { grid-template-columns: 1fr; }
+            .countdown-box { gap: 10px; padding: 15px 20px; }
+            .countdown-item .number { font-size: 1.8rem; }
+            .love-letter { padding: 25px; }
+            .love-letter h2 { font-size: 1.5rem; }
+            .love-letter p { font-size: 1rem; }
+        }
+        /* 打字机效果 */
+        .typewriter {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid #e91e63;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: #e91e63; }
+        }
+    </style>
+<base href="/lmq/">
+</head>
+<body>
+    <!-- 背景音乐 相对路径 -->
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    
+    <!-- 漂浮爱心 -->
+    <div id="heartsContainer"></div>
+    <!-- 飘落花瓣 -->
+    <div id="petalsContainer"></div>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1>❤️ 表白 lmq ❤️</h1>
+            <p class="subtitle">你是我不期而遇的温暖，是我生生不息的希望</p>
+            <div class="date-display">
+                📅 今天是 <span id="currentDate"></span>，喜欢你的第 <span id="loveDays">0</span> 天
+            </div>
+        </header>
+        <!-- 倒计时 -->
+        <section class="countdown-section">
+            <div class="countdown-box">
+                <div class="countdown-item">
+                    <span class="number" id="days">00</span>
+                    <span class="label">天</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="number" id="hours">00</span>
+                    <span class="label">时</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="number" id="minutes">00</span>
+                    <span class="label">分</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="number" id="seconds">00</span>
+                    <span class="label">秒</span>
+                </div>
+            </div>
+            <p style="color: #c2185b; margin-top: 15px; font-size: 1.1rem;">💕 距离我们下一次相见还有 💕</p>
+        </section>
+        <!-- 表白信 -->
+        <section class="love-letter">
+            <h2>致我最爱的 lmq</h2>
+            <p>
+                从遇见你的那一刻起，我的世界就被染成了粉红色。你的笑容像春天的阳光，温暖了我所有的日子。
+            </p>
+            <p>
+                每一次想起你，心里就像有千万只蝴蝶在飞舞。你的一颦一笑，都深深印在我的脑海里，挥之不去。
+            </p>
+            <p>
+                我想和你一起看遍世间所有的风景，想陪你走过每一个春夏秋冬。你就是我今生最美的遇见，是我想要守护一辈子的人。
+            </p>
+            <p>
+                lmq，我喜欢你，比昨天更多，却不及明天。愿意做我的女朋友吗？💕
+            </p>
+            <div class="signature">
+                —— 一个深深喜欢你的人 💌
+            </div>
+        </section>
+        <!-- 照片墙 全部本地相对路径 -->
+        <section class="photo-section">
+            <h2 class="section-title">我们的美好瞬间</h2>
+            <div class="photo-grid" id="photoGrid">
+                <!-- 照片卡片 1 -->
+                <div class="photo-card" onclick="openModal(this)">
+                    <img src="1.jpg" alt="美好回忆1">
+                    <span class="heart-overlay">💗</span>
+                    <div class="photo-caption">珍贵瞬间一</div>
+                </div>
+                <!-- 照片卡片 2 -->
+                <div class="photo-card" onclick="openModal(this)">
+                    <img src="2.jpg" alt="美好回忆2">
+                    <span class="heart-overlay">💗</span>
+                    <div class="photo-caption">珍贵瞬间二</div>
+                </div>
+                <!-- 照片卡片 3 -->
+                <div class="photo-card" onclick="openModal(this)">
+                    <img src="3.jpg" alt="美好回忆3">
+                    <span class="heart-overlay">💗</span>
+                    <div class="photo-caption">珍贵瞬间三</div>
+                </div>
+                <!-- 照片卡片 4 -->
+                <div class="photo-card" onclick="openModal(this)">
+                    <img src="a.jpg" alt="美好回忆4">
+                    <span class="heart-overlay">💗</span>
+                    <div class="photo-caption">珍贵瞬间四</div>
+                </div>
+                <!-- 照片卡片 5 -->
+                <div class="photo-card" onclick="openModal(this)">
+                    <img src="b.jpg" alt="美好回忆5">
+                    <span class="heart-overlay">💗</span>
+                    <div class="photo-caption">珍贵瞬间五</div>
+                </div>
+            </div>
+            <div class="upload-hint">
+                <span class="upload-icon">📸</span>
+                <p><strong>照片上传提示</strong></p>
+                <p>后续新增照片直接上传仓库根目录，修改src文件名即可</p>
+                <p style="margin-top:10px; font-size: 0.9rem; color: #999;">文件名大小写保持一致</p>
+            </div>
+        </section>
+        <!-- 视频区域 封面+视频本地路径 -->
+        <section class="video-section">
+            <h2 class="section-title">专属视频</h2>
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <video controls poster="b.jpg">
+                        <source src="video.mp4" type="video/mp4">
+                        <p style="color: #c2185b; text-align: center; padding-top: 20%;">
+                            🎬 视频加载失败，请检查仓库视频文件名
+                        </p>
+                    </video>
+                </div>
+                <p class="video-caption">🎥 这是我想对你说的话，请认真看完哦~</p>
+            </div>
+        </section>
+        <!-- 互动按钮 -->
+        <section class="interactive-section">
+            <h2 class="section-title">心动互动</h2>
+            <div class="btn-group">
+                <button class="love-btn btn-pink" onclick="showLove()">💕 点我接收爱意</button>
+                <button class="love-btn btn-rose" onclick="showPromise()">💍 我们的约定</button>
+                <button class="love-btn btn-pink" onclick="rainHearts()">🌸 下一场爱心雨</button>
+            </div>
+        </section>
+        <!-- 底部 -->
+        <footer class="footer">
+            <p>💗 lmq，你是我今生最美的遇见 💗</p>
+            <div class="footer-hearts">💖 💕 💗 💓 💝 💘</div>
+            <p style="margin-top: 15px; font-size: 0.9rem; color: #999;">
+                Made with ❤️ for lmq
+            </p>
+        </footer>
+    </div>
+    <!-- 照片放大模态框 -->
+    <div class="modal" id="photoModal" onclick="closeModal()">
+        <span class="close-btn">&times;</span>
+        <img id="modalImg" src="" alt="放大照片">
+    </div>
+    <!-- 弹窗 -->
+    <div class="overlay" id="overlay" onclick="closePopup()"></div>
+    <div class="popup" id="popup">
+        <span class="popup-icon" id="popupIcon">💕</span>
+        <h3 id="popupTitle">标题</h3>
+        <p id="popupContent">内容</p>
+        <button class="close-popup" onclick="closePopup()">知道啦 💗</button>
+    </div>
+    <!-- 音乐控制 -->
+    <div class="music-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
+    <script>
+        // 修复错误日期 2026-06-026 → 2026-06-26
+        const meetDate = new Date('2026-06-26'); // 相识日期
+        const nextMeetDate = new Date('2026-08-28'); // 下次见面日期
+        // 显示当前日期
+        function updateDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('zh-CN', options);
+            const diffTime = Math.abs(now - meetDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('loveDays').textContent = diffDays;
+        }
+        // 倒计时
+        function updateCountdown() {
+            const now = new Date();
+            const diff = nextMeetDate - now;
+            if (diff > 0) {
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            }
+        }
+        // 生成漂浮爱心
+        function createHearts() {
+            const container = document.getElementById('heartsContainer');
+            const hearts = ['💕', '💖', '💗', '💓', '💝', '💘', '💞'];
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animationDelay = Math.random() * 8 + 's';
+                heart.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                container.appendChild(heart);
+            }
+        }
+        // 生成飘落花瓣
+        function createPetals() {
+            const container = document.getElementById('petalsContainer');
+            for (let i = 0; i < 10; i++) {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                petal.style.left = Math.random() * 100 + '%';
+                petal.style.animationDelay = Math.random() * 10 + 's';
+                petal.style.animationDuration = (Math.random() * 5 + 8) + 's';
+                container.appendChild(petal);
+            }
+        }
+        // 点击爱心效果
+        document.addEventListener('click', function(e) {
+            const heart = document.createElement('div');
+            heart.className = 'click-heart';
+            heart.textContent = ['💕', '💖', '💗', '💓'][Math.floor(Math.random() * 4)];
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 1000);
+        });
+        // 照片放大
+        function openModal(card) {
+            const img = card.querySelector('img');
+            document.getElementById('modalImg').src = img.src;
+            document.getElementById('photoModal').classList.add('active');
+        }
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('active');
+        }
+        // 弹窗
+        function showPopup(icon, title, content) {
+            document.getElementById('popupIcon').textContent = icon;
+            document.getElementById('popupTitle').textContent = title;
+            document.getElementById('popupContent').textContent = content;
+            document.getElementById('overlay').classList.add('active');
+            document.getElementById('popup').classList.add('active');
+        }
+        function closePopup() {
+            document.getElementById('overlay').classList.remove('active');
+            document.getElementById('popup').classList.remove('active');
+        }
+        function showLove() {
+            const messages = [
+                { icon: '💖', title: '超级喜欢你！', content: 'lmq，我对你的喜欢就像星星一样多，像大海一样深！每一天都想要告诉你：我真的好喜欢你！' },
+                { icon: '💗', title: '你是我的唯一', content: '在这个世界上，有七十亿人，但我只看得见你一个人。你就是我的唯一，我的全世界！' },
+                { icon: '💝', title: '想陪在你身边', content: '想和你一起看日出日落，想和你一起走过春夏秋冬，想陪你做所有你想做的事情！' },
+                { icon: '💘', title: '心动的感觉', content: '每次见到你，我的心都会跳得好快。这就是心动的感觉吧？lmq，你就是我的心动女孩！' }
+            ];
+            const msg = messages[Math.floor(Math.random() * messages.length)];
+            showPopup(msg.icon, msg.title, msg.content);
+        }
+        function showPromise() {
+            showPopup('💍', '我们的甜蜜约定', 
+                '我答应你：\n\n' +
+                '1. 每天都会对你说早安和晚安\n' +
+                '2. 不开心的时候第一时间陪你\n' +
+                '3. 记住你喜欢的和不喜欢的\n' +
+                '4. 带你去吃所有好吃的\n' +
+                '5. 永远把你放在第一位\n\n' +
+                'lmq，愿意和我一起实现这些约定吗？');
+        }
+        // 爱心雨
+        function rainHearts() {
+            for (let i = 0; i < 30; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'click-heart';
+                    heart.textContent = ['💕', '💖', '💗', '💓', '💝', '💘'][Math.floor(Math.random() * 6)];
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = '-50px';
+                    heart.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    heart.style.animation = 'clickHeartAnim 2s ease-out forwards';
+                    document.body.appendChild(heart);
+                    setTimeout(() => heart.remove(), 2000);
+                }, i * 100);
+            }
+        }
+        // 音乐控制
+        let isPlaying = false;
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            if (isPlaying) {
+                music.pause();
+                btn.classList.remove('playing');
+                btn.textContent = '🎵';
+            } else {
+                music.play().catch(e => {
+                    showPopup('🎵','温馨提示','浏览器限制自动播放，请点击页面任意位置后，再次点击音乐按钮~');
+                    console.log('播放失败:', e);
+                });
+                btn.classList.add('playing');
+                btn.textContent = '🎶';
+            }
+            isPlaying = !isPlaying;
+        }
+        // 初始化
+        updateDate();
+        updateCountdown();
+        createHearts();
+        createPetals();
+        setInterval(updateCountdown, 1000);
+        setInterval(updateDate, 60000);
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            document.body.style.transition = 'opacity 1s';
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+    </script>
+</body>
+</html>
